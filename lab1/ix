@@ -1,0 +1,2 @@
+#!/bin/bash
+(cat $(find /var/log | grep [.]log$) | wc -l) 2> /dev/null

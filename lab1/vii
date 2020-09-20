@@ -1,0 +1,3 @@
+#!/bin/bash
+email="[[:alnum:]_.]+@[[:alnum:]_.]+(\\.[[:alpha:]]+)+"
+grep -E -h -s -o -w -r $email /etc | awk '{printf("%s, ",$1)}'| sed -E "s/$email,\s$//g" > emails.lst

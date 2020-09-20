@@ -1,0 +1,8 @@
+#!/bin/bash
+bigstr=""
+while [ "$str" != "q" ]; do
+	bigstr+="$str"
+	read str
+done
+echo "$bigstr"
+
