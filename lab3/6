@@ -1,6 +1,6 @@
 #!/bin/bash
 echo $$ > pid
-i=1
+result=1
 mode="+"
 sigterm(){
 	echo "STOP"
@@ -19,12 +19,12 @@ while true
 do
 	case $mode in
 	"+")
-		let i=$i+2
+		let result=$result+2
 	;;
 	"*")
-		let i=$i*2
+		let result=$result*2
 	;;
 	esac
-	echo $i
+	echo $result
 	sleep 1
 done
