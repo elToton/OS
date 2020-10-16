@@ -1,0 +1,17 @@
+#!/bin/bash
+./5& > 5.in
+while true
+do
+	read line
+	if [[ $line == "QUIT" ]]
+		then
+			rm 5.in
+			exit
+	fi
+	if [[ $line == "*" ]]
+		then 
+			echo "*" >> 5.in
+		else
+			echo $line >> 5.in
+	fi	
+done

@@ -1,0 +1,4 @@
+#!/bin/bash
+nice -n 10 ./4&
+nice -n 0 ./4&
+nice -n 0 ./4&
