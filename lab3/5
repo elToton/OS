@@ -1,7 +1,7 @@
 #!/bin/bash
 result=1
 operate='+'
-tail -n 0 -f 5.in | while true
+tail -f 5.in | while true
 do
 	read line
 	case $line in
@@ -24,7 +24,7 @@ do
 		echo "$res $operate $line = $result"
 	;;
 	*)
-		echo "ERROR"
+		kill $$
 	;;
 	esac
 done
