@@ -1,0 +1,27 @@
+#!/bin/bash
+> 71.txt
+> 72.txt
+path=$(ls /proc | awk '$0 !~ /[A-Za-z]/')
+processes=$(echo $path | tr " " "\n")
+
+for pid in $processes
+do
+	echo $pid" "$(grep "read_bytes:" "/proc/"$pid"/io" | awk '{print $2}') >> 71.txt
+done
+sleep 10
+
+for pid in $processes
+do
+	echo $pid" "$(grep "read_bytes:" "/proc/"$pid"/io" | awk '{print $2}') >> 72.txt
+done
+
+cat 71.txt |
+while read str
+do
+	pid=$(awk '{print $1}' <<< $str)
+	rss=$(awk '{print $2}' <<< $str)
+	rssAfterMin=$(cat 72.txt | awk -v Pid="$pid" '{if ($1 == Pid) print $2}')
+	rssres=$(echo "$rssAfterMin - $rss" | bc)
+	cmd=$(ps -q $pid -o comm=)
+	echo $pid":"$cmd":"$rssres
+done | sort -t ":" -nrk3 | head -3

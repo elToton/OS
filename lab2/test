@@ -1,0 +1,2 @@
+#!/bin/bash
+top -o NI | head -11 | tail -n +9 | awk '{print $2" : "$5}'

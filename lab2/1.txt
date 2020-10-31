@@ -1,0 +1,10 @@
+total process count: 8
+
+1413:/usr/lib/systemd/systemd --user
+1419:(sd-pam)
+1425:-bash
+2213:/bin/bash ./i
+2214:/bin/bash ./i
+2215:ps -U user -o pid,command
+2216:tail -n +2
+2217:sed -r s/\s*([^ ]+)\s(.*)/\1:\2/

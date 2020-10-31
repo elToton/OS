@@ -1,0 +1,28 @@
+#!/bin/bash
+ppid0="0"
+ArtSum="0"
+count="0"
+AVG="0"
+
+echo -e "$(<4.txt)\n" | sed "s/[^0-9.]\+/ /g" | sed "s/^ //g" |
+while read str
+do
+	pid=$(awk '{print $1}' <<< $str)
+	ppid=$(awk '{print $2}' <<< $str)
+	art=$(awk '{print $3}' <<< $str)
+	if [[ $ppid == $ppid0 ]]
+	then
+		ArtSum=$(echo "$ArtSum+$art" | bc | awk '{printf "%f", $0}')
+		count=$(($count+1))
+	else
+		AVG=$(echo "scale=5; $ArtSum/$count" | bc | awk '{printf "%f", $0}')
+		echo "Average_Children_Running_Time_of_ParentID="$ppid0" id "$AVG
+		ArtSum=$art
+		count=1
+		ppid0=$ppid
+	fi
+	if [[ ! -z $pid ]]
+	then
+		echo "ProcessID="$pid" : Parent_ProcessID="$ppid" : Average_Running_Time="$art
+	fi
+done > 5.txt

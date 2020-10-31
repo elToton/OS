@@ -1,0 +1,19 @@
+#!/bin/bash
+> 4.txt
+for pid in $(ps -eo pid | tail -n +2)
+do
+	ser=$(grep -Esh "sum_exec_runtime" "/proc/"$pid"/sched" | awk '{print $3;}')
+	ns=$(grep -Esh "nr_switches" "/proc/"$pid"/sched" | awk '{print $3;}')
+	ppid=$(grep -Esh "^PPid:" "/proc/"$pid"/status" | awk '{print $2;}')
+	if [ -z $ser ] || [ -z $ns ]
+	then
+		art=0
+	else
+		art=$(echo "scale=5; $ser/$ns" | bc -l)
+	fi
+	if [[ "$ppid" != "" ]]
+	then
+		echo "ProccesID = "$pid" : Parent_ProcessID = "$ppid" : Average_Time = "$art"" >> 4.txt
+	fi
+done
+echo "$(cat 4.txt | sort -nt " " -k7)" > 4.txt

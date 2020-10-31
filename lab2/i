@@ -1,0 +1,6 @@
+#!/bin/bash
+proc=$( ps -U user -o pid,command | tail -n +2 | sed -r "s/\s*([^ ]+)\s(.*)/\1:\2/")
+lines_count=$(echo "$proc" | wc -l)
+echo "total process count: $lines_count" > 1.txt
+echo -e "\n$proc" >> 1.txt
+
