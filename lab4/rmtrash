@@ -1,0 +1,30 @@
+#!/bin/bash
+trash=$HOME/.trash
+log=$HOME/trash.log
+
+if [[ ! -f $PWD/$1 ]]
+then
+	echo "file doesn't exist"
+	exit 1
+fi
+
+if [ $# -eq 1 ]
+	then
+		if [ ! -d $trash ]
+			then
+				mkdir $trash
+				touch $log
+		fi
+
+		trashFile=$(cat i)
+		
+		t=$(echo "$trashFile + 1" | bc)
+		echo "$t" > i
+		
+		ln "$PWD/$1" "$trash/$trashFile"
+		echo "$PWD/$1:$trashFile" >> $log
+		rm "$PWD/$1"
+	else
+		echo "error"
+		exit 1
+fi

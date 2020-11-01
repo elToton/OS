@@ -1,0 +1,68 @@
+#!/bin/bash
+restFile=/home/user/OS/lab4/$1
+TrashDir=$HOME/.trash
+TrashLog=$HOME/trash.log
+
+if [[ ! -d $TrashDir ]]
+then
+	echo ".trash doesn't exist"
+	exit 1
+fi
+
+if [[ ! -e $TrashLog ]]
+then
+	echo "trash.log doesn't exist"
+	exit 1
+fi
+
+if [[ -z $(grep "$1" $TrashLog) ]]
+then
+	echo "$1 doesn't exist"
+	exit 1
+fi
+
+if [[ $# -ne 1 ]]
+then
+	echo "incorrect arguments"
+	exit 1
+fi
+
+for i in $(grep -h $1 $TrashLog)
+do
+	glPath=$(echo $i | awk -F ":" '{print $1}')
+	trFile=$(echo $i | awk -F ":" '{print $2}')
+	if [[ $restFile == $glPath ]]
+	then
+		rmFile=$TrashDir/$trFile
+		if [[ -e $rmFile ]]
+		then
+			echo "Do you want to restore file - $restFile ?"
+			read answer
+			if [[ $answer == "yes" ]]
+			then
+				if [[ -d $(dirname $restFile) ]]
+				then
+					if [[ -e $restFile ]]
+					then
+						echo "Dublicate! Rename your file"
+						read newName
+						ln "$rmFile" "$(dirname $restFile)/$newName"
+					else
+						ln "$rmFile" "$restFile"
+					fi
+				else
+					echo "$(dirname $restFile) has been removed!"
+					ln "$rmFile" "$HOME/$1"
+				fi
+				rm $rmFile
+				#grep -v $trFile $HOME/trash.log > $HOME/trash0.log
+				#mv $HOME/trash0.log $HOME/trash.log
+			else
+				continue
+			fi
+		fi
+	fi
+done
+#	echo "file not found"
+
+	
