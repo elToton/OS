@@ -1,0 +1,38 @@
+#!/bin/bash
+FileName=$1
+Command=$2
+Dir=$HOME/OS/lab4/.asgit
+
+case "$Command" in
+	"check")
+		if [[ ! -d $Dir ]]
+		then
+			mkdir .asgit
+		fi
+		if [[ -e $Dir/$FileName ]]
+		then
+			actual_size=$(stat $FileName -c%s)
+			old+size=$(stat $Dir/$FileName -c%s)
+			size_diff=$(echo "$old_size - $actual_size" | bc)
+			
+			if [[ $size_diff == 0 ]]
+			then
+				echo "ok" > task.log
+			fi
+		else		
+			cp $FileName $Dir
+		fi
+	;;
+	"recover")
+		if [[ -e $Dir/$FileName ]]
+		then
+		rm $FileName
+		ln "$Dir/$FileName" "$FileName"
+		fi
+	;;
+	*)
+		echo "wrong command, try again"
+#		read NewCommand
+#		Command=$NewCommand
+	;;
+

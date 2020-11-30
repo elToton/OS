@@ -1,0 +1,6 @@
+#!/bin/bash
+FileName=$1
+TypeOfWarning=$2
+
+awk '$1 == "($TypeOfWarning)" {print}' $FileName | sed 's/($TypeOfWarning)/w' > logs.txt 
+awk '$1 == "($TypeOfWarning)" {print}' $FileName | sed 's/($TypeOfWarning)/d' > file2.txt 

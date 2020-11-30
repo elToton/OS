@@ -1,0 +1,16 @@
+#!/bin/bash
+file=$HOME/OS/lab3/test.log
+while true
+do
+#	tail -n 0 -f test.log		
+	for i in $(tail -n 0 -f $file)
+	do
+		if [[ "$i" > 1000 ]] 
+		then
+			
+			
+		fi 
+	done
+
+	sleep 3
+done

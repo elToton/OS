@@ -9,6 +9,13 @@ lastBackupSec=$(date -d "$lastBackupDate" +"%s")
 
 dateDiff=$(echo "($todaySec - $lastBackupSec) / 60 / 60 / 24" | bc)
 
+if [[ ! -d $HOME/source ]]
+then
+	echo "ERROR"
+	exit 1
+fi
+
+
 if (( $dateDiff > 7 )) || [[ -z "$lastBackupDate" ]]
 then
 	mkdir "$HOME/Backup-$todayDate"
@@ -16,12 +23,17 @@ then
 	for i in $(ls $HOME/source)
 	do
 		cp "$HOME/source/$i" "$HOME/Backup-$todayDate"
-		echo "\n\t$i" >> $REPORT
+		echo -e "\n\t$i" >> $REPORT
 	done	
 else
 	changes=""
 	for file in $(ls $HOME/source)
 	do
+		if [[ -d "$HOME/source/$file" ]]
+		then
+			echo "ERROR - File is a Directory"
+			rm -r $HOME/source/$1
+			fi
 		if [[ -f "$lastBackup/$file" ]]
 		then
 			source_size=$(stat $HOME/source/$file -c%s)

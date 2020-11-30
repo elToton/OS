@@ -1,0 +1,8 @@
+#!/bin/bash
+./test&
+>test.log
+
+while true
+do
+	ps aux | head -1 | awk '{print $2" работает и скоро поедет в отпуск " }' >> test.log
+done 
